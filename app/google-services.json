@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "918292894320",
+    "project_id": "examen-final-151dc",
+    "storage_bucket": "examen-final-151dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918292894320:android:d79ba0a931c6896800dab5",
+        "android_client_info": {
+          "package_name": "com.eventos.eventosapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxV_4ZtaPbBy4qsoDKxLgurH33eTdwxX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918292894320:android:5218a8a62bd3fa0200dab5",
+        "android_client_info": {
+          "package_name": "com.examen.examenfinalespinola"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxV_4ZtaPbBy4qsoDKxLgurH33eTdwxX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
