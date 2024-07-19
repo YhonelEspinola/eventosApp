@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:paddingBottom="20dp"
+    android:id="@+id/item">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp">
+        <ImageView
+            android:id="@+id/imagen"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+            android:src="@drawable/img_carga"
+            android:scaleType="centerCrop"/>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/icon_calendario"
+                android:layout_marginEnd="5dp"/>
+            <TextView
+                android:id="@+id/fechaHora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="fechaHora"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:text=" - "
+                android:maxLines="1"
+                android:ellipsize="end"/>
+            <TextView
+                android:id="@+id/horaFin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="12dp"
+                android:text="hora"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="titulo"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:layout_marginTop="2dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="bottom">
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="15dp"
+                android:src="@drawable/icon_locacion"
+                android:layout_marginEnd="2dp"/>
+            <TextView
+                android:id="@+id/sedeDireccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="sede"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
