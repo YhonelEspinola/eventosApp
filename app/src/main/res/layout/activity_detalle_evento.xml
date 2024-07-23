@@ -124,10 +124,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Catego"
-                    android:gravity="end"
                     android:textSize="13sp"
-                    android:paddingStart="7dp"
-                    android:paddingEnd="7dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:paddingTop="1dp"
                     android:paddingBottom="2dp"
                     android:textColor="@color/white"
@@ -232,12 +231,15 @@
                 android:scaleType="centerCrop"/>
 
             <LinearLayout
+                android:id="@+id/BotonesAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                >
                 <Button
+                    android:id="@+id/btnVerInscritos"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:text="Inscritos"
@@ -248,6 +250,14 @@
                     android:layout_height="wrap_content"
                     android:text="Editar"/>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnParticipar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Participar"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"/>
 
         </LinearLayout>
 

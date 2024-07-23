@@ -4,21 +4,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.eventos.eventosapp.model.Evento
-import com.eventos.eventosapp.view.viewholder.ListaEventoViewHolder
+import com.eventos.eventosapp.view.viewholder.ListaEventoPequeViewHolder
 
-class ListaEventoAdapter: RecyclerView.Adapter<ListaEventoViewHolder>() {
+class ListaEventoPequeAdapter(): RecyclerView.Adapter<ListaEventoPequeViewHolder>()  {
+
     private var list= emptyList<Evento>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaEventoViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaEventoPequeViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ListaEventoViewHolder(inflater,parent)
+        return ListaEventoPequeViewHolder(inflater,parent)
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
 
-    override fun onBindViewHolder(holder: ListaEventoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListaEventoPequeViewHolder, position: Int) {
         val evento=list[position]
         holder.bind(evento)
     }

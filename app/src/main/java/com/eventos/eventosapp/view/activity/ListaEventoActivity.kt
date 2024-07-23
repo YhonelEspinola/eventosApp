@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eventos.eventosapp.R
-import com.eventos.eventosapp.view.adapter.ListaEventoAdapter
+import com.eventos.eventosapp.view.adapter.ListaEventoPequeAdapter
 import com.eventos.eventosapp.viewmodel.EventoViewModel
 
 class ListaEventoActivity: AppCompatActivity() {
@@ -23,7 +23,7 @@ class ListaEventoActivity: AppCompatActivity() {
 
         val recycler =findViewById<RecyclerView>(R.id.recyclerEvento)
 
-        val adapterE = ListaEventoAdapter()
+        val adapterE = ListaEventoPequeAdapter()
         recycler.adapter=adapterE
         recycler.layoutManager= LinearLayoutManager(this)
 

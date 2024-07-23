@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/itemOpcion1"
+        android:icon="@drawable/icon_arte_musical"
+        android:iconTint="@color/azulClaro"
+        android:title="Arte Musical"
+        />
+
+    <item
+        android:id="@+id/itemOpcion2"
+        android:icon="@drawable/icon_artes_escenicas"
+        android:iconTint="@color/azulClaro"
+        android:title="Artes Escénicas"
+        />
+
+    <item
+        android:id="@+id/itemOpcion3"
+        android:icon="@drawable/icon_artes_marciales"
+        android:iconTint="@color/azulClaro"
+        android:title="Artes Marciales"
+        />
+
+    <item
+        android:id="@+id/itemOpcion4"
+        android:icon="@drawable/icon_danzas_bailes"
+        android:iconTint="@color/azulClaro"
+        android:title="Danzas y Bailes"
+        />
+
+
+</menu>
