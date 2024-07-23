@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="10dp"
+    >
+
+    <TextView
+        android:id="@+id/btnSedes"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/design_filter_sede_background_default"
+        android:text="Sede 1"
+        android:textColor="@color/black"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:gravity="center_vertical"
+        />
+
+</LinearLayout>

@@ -140,4 +140,48 @@ class EventoViewModel : ViewModel(){
                 listEventos.value=newList
             }
     }
+
+    fun listarEventoPorFiltros(sede:String,categoria:String){
+
+        var query:Query = db.collection("eventos")
+
+        if (!sede.isNullOrEmpty() ) {
+            query = query.whereEqualTo("sede", sede)
+        }
+
+        if (!categoria.isNullOrEmpty()) {
+            query = query.whereEqualTo("categoria", categoria)
+        }
+
+        query.whereEqualTo("estadoevento", true)
+            .orderBy("fechayhora", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                var newList = arrayListOf<Evento>()
+                for(document in querySnapshot){
+                    val data = document.data
+                    val nomevento = data["nomevento"] as? String ?: ""
+                    val categoria = data["categoria"] as? String ?: ""
+                    val sede = data["sede"] as? String ?: ""
+                    val fechayhora = data["fechayhora"] as? Timestamp
+                    val horafin = data["horafin"] as? String ?: ""
+                    val maxparticipantes = data["maxparticipantes"] as? Long ?: 0
+                    val actualparticipantes = data["actualparticipantes"] as? Long ?: 0
+                    val descripcion = data["descripcion"] as? String ?: ""
+                    val imgevento = data["imgevento"] as? String ?: ""
+                    val imgprofe = data["imgprofe"] as? String ?: ""
+                    val nomprofe = data["nomprofe"] as? String ?: ""
+                    val infoprofe = data["infoprofe"] as? String ?: ""
+                    val estadoevento = data["estadoevento"] as? Boolean ?: false
+                    val ubicacion = data["ubicacion"] as? GeoPoint?:GeoPoint(0.0, 0.0)
+                    val codigo = document.id
+
+                    val modelo= Evento(nomevento,categoria,sede,fechayhora,horafin,maxparticipantes,actualparticipantes,
+                        descripcion,imgevento,imgprofe,nomprofe,infoprofe,estadoevento,ubicacion,codigo)
+                    newList.add((modelo))
+
+                }
+                listEventos.value=newList
+            }
+    }
 }

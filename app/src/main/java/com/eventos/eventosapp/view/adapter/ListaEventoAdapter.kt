@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eventos.eventosapp.model.Evento
 import com.eventos.eventosapp.view.viewholder.ListaEventoViewHolder
 
-class ListaEventoAdapter(): RecyclerView.Adapter<ListaEventoViewHolder>()  {
-
+class ListaEventoAdapter: RecyclerView.Adapter<ListaEventoViewHolder>() {
     private var list= emptyList<Evento>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaEventoViewHolder {
