@@ -243,6 +243,7 @@
                     android:text="Inscritos"
                     android:layout_marginEnd="10dp"/>
                 <Button
+                    android:id="@+id/btnEditar"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:text="Editar"/>
