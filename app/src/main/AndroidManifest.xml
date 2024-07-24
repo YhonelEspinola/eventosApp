@@ -15,7 +15,7 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBI-8gwjfAjH9d1ZmAWhfjaJwHerl26uSs"/>
         <activity
-            android:name=".view.activity.MenuActivity"
+            android:name=".view.activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.activity.MenuActivity"/>
+        <activity android:name=".view.activity.GestionEventosActivity"/>
         <activity android:name=".view.activity.CrearEventoActivity"/>
         <activity android:name=".view.activity.DetalleEventoActivity"/>
         <activity android:name=".view.activity.ListaEventoActivity"/>
