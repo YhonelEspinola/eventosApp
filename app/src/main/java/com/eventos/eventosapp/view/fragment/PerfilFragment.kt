@@ -1,5 +1,6 @@
 package com.eventos.eventosapp.view.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -44,9 +45,20 @@ class PerfilFragment: Fragment() {
 
     private fun cerrarSesion(){
         firebaseAuth!!.signOut()
+        clearPreferences()
         startActivity(Intent(activity,LoginActivity::class.java))
         activity?.finish()
     }
+
+    private fun clearPreferences() {
+        val sharedPreferences = requireActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("email")
+        editor.remove("password")
+        editor.remove("remember")
+        editor.apply()
+    }
+
     companion object{
         fun newInstance() : PerfilFragment = PerfilFragment()
     }

@@ -1,8 +1,10 @@
 package com.eventos.eventosapp.view.activity
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +20,8 @@ class LoginActivity:AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +33,63 @@ class LoginActivity:AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
+        sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Espere por favor")
+        progressDialog.setCanceledOnTouchOutside(false)
+
+        loadPreferences()
+
         binding.btnIniciarSesion.setOnClickListener {
             val email = binding.emailUser.text.toString()
             val password = binding.passwordUser.text.toString()
+
+            if (binding.rememberCuenta.isChecked) {
+                savePreferences(email, password)
+            }
 
             viewModel.validarInfo(email,password)
         }
 
         observerLiveData()
+    }
+
+    private fun savePreferences(email: String, password: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString("email", email)
+        editor.putString("password", password)
+        editor.putBoolean("remember", true)
+        editor.apply()
+    }
+
+    private fun loadPreferences() {
+        val remember = sharedPreferences.getBoolean("remember", false)
+        if (remember) {
+            val email = sharedPreferences.getString("email", "")
+            val password = sharedPreferences.getString("password", "")
+            if (!email.isNullOrEmpty() && !password.isNullOrEmpty()) {
+                binding.emailUser.setText(email)
+                binding.passwordUser.setText(password)
+                binding.rememberCuenta.isChecked = true
+
+                progressDialog.setMessage("Ingresando")
+                progressDialog.show()
+
+                iniciarSesion(email, password)
+            }
+        }
+    }
+
+    private fun iniciarSesion(email: String, password: String) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    comprobarUsuario()
+                } else {
+                    Toast.makeText(this, "Error al iniciar sesión automáticamente.", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun observerLiveData() {
@@ -103,4 +156,5 @@ class LoginActivity:AppCompatActivity() {
             Toast.makeText(this, "Error al obtener información de usuario.", Toast.LENGTH_SHORT).show()
         }
     }
+
 }
