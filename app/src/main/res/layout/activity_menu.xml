@@ -8,7 +8,7 @@
         android:id="@+id/linea"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gris"
+        android:background="@color/grisclaro"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         />
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,7 +18,7 @@
         android:layout_height="65dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu_bottom"
-        android:background="@color/white"
+        android:background="@color/backgrounMenu"
         android:duplicateParentState="true"
         app:itemIconTint="@color/selector_color_menu"
         app:itemTextColor="@color/selector_color_menu"

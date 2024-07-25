@@ -12,6 +12,7 @@
         android:layout_height="25dp"
         android:layout_marginTop="18dp"
         android:layout_marginStart="20dp"
+        app:tint="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/icon_flecha_left"
@@ -27,8 +28,8 @@
         android:layout_marginBottom="10dp"
         app:searchIcon="@null"
         app:queryHint="Buscar..."
+        app:queryBackground="@android:color/transparent"
         app:iconifiedByDefault="false"
-        android:theme="@style/CustomSearchViewTheme"
         android:background="@drawable/buscar_design"
         />
 

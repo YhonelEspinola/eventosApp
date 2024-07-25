@@ -62,6 +62,7 @@
             <ImageView
                 android:layout_width="17dp"
                 android:layout_height="17dp"
+                app:tint="@color/black"
                 android:src="@drawable/icon_locacion"
                 android:layout_marginEnd="5dp"/>
             <TextView
@@ -89,6 +90,7 @@
                     android:layout_width="17dp"
                     android:layout_height="17dp"
                     android:src="@drawable/icon_calendario"
+                    app:tint="@color/black"
                     android:layout_marginEnd="5dp"/>
                 <TextView
                     android:id="@+id/fechaHora"
@@ -120,7 +122,8 @@
                     android:layout_width="17dp"
                     android:layout_height="17dp"
                     android:src="@drawable/icon_person"
-                    android:layout_marginEnd="5dp"/>
+                    android:layout_marginEnd="5dp"
+                    app:tint="@color/black"/>
                 <TextView
                     android:id="@+id/participantesActuales"
                     android:layout_width="wrap_content"

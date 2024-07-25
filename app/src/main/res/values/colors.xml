@@ -10,4 +10,6 @@
     <color name="backgroundGuardar">#322196F3</color>
     <color name="background">#66000000</color>
     <color name="grisclaro">#F1F1F1</color>
+    <color name="backgrounMenu">#FFFFFFFF</color>
+    <color name="oscuro">#18191A</color>
 </resources>
