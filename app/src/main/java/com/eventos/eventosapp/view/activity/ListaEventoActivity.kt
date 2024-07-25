@@ -3,6 +3,7 @@ package com.eventos.eventosapp.view.activity
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ class ListaEventoActivity: AppCompatActivity() {
         viewModel = ViewModelProvider(this)[EventoViewModel::class.java]
 
         val recycler =findViewById<RecyclerView>(R.id.recyclerEvento)
+        val searchView = findViewById<SearchView>(R.id.search)
 
         val adapterE = ListaEventoPequeAdapter()
         recycler.adapter=adapterE
@@ -35,6 +37,18 @@ class ListaEventoActivity: AppCompatActivity() {
             }
 
         }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { adapterE.filtrarDatos(it) }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { adapterE.filtrarDatos(it) }
+                return false
+            }
+        })
 
     }
 }
