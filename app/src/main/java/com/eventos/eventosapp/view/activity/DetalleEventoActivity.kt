@@ -1,6 +1,9 @@
 package com.eventos.eventosapp.view.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -37,6 +40,7 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
         val infoProfesor= findViewById<TextView>(R.id.infoProfesor)
         val descripcion= findViewById<TextView>(R.id.descripcion)
         val imgmap= findViewById<ImageView>(R.id.imgMap)
+        val btnEditar = findViewById<Button>(R.id.btnEditar)
 
         val nomevento = intent.getStringExtra("nomevento")
         val categ = intent.getStringExtra("categoria")
@@ -69,6 +73,27 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
 
         imgmap.setOnClickListener{
             mostrarDialogoMap()
+        }
+
+        btnEditar.setOnClickListener {
+            Log.d("DetalleEventoActivity", "Editar button clicked")
+            val intent = Intent(this, EditarEventoActivity::class.java).apply {
+                putExtra("nomevento", nomevento)
+                putExtra("categoria", categ)
+                putExtra("sede", sede)
+                putExtra("fechayhora", fechayhora)
+                putExtra("horafin", horafin)
+                putExtra("maxparticipantes", maxparticipantes)
+                putExtra("actualparticipantes", actualparticipantes)
+                putExtra("descripcion", descrip)
+                putExtra("imgevento", imgevento)
+                putExtra("imgprofe", imgprofe)
+                putExtra("nomprofe", nomprofe)
+                putExtra("infoprofe", infoprofe)
+                putExtra("codigo", codigo)
+            }
+            Log.d("DetalleEventoActivity", "Starting EditarEventoActivity with intent: $intent")
+            startActivity(intent)
         }
 
     }

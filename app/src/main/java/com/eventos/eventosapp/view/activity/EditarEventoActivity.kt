@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.eventos.eventosapp.R
+import com.eventos.eventosapp.viewmodel.EditarEventoViewModel
 import com.eventos.eventosapp.viewmodel.SedeViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
@@ -27,23 +28,26 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import com.google.firebase.Timestamp
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class EditarEventoActivity:AppCompatActivity() {
 
-    val pickMediaEvento = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri->
-        if(uri != null){
+    val pickMediaEvento = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
             imgEvento.setImageURI(uri)
             ImgUriEvento = uri
-        }else{
-            Log.i("ari","img no seleccionada")
+        } else {
+            Log.i("ari", "img no seleccionada")
         }
     }
-    val pickMediaProfe = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri->
-        if(uri != null){
+    val pickMediaProfe = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
             imgProfesor.setImageURI(uri)
             ImgUriProfe = uri
-        }else{
-            Log.i("ari","img no seleccionada")
+        } else {
+            Log.i("ari", "img no seleccionada")
         }
     }
     lateinit var imgEvento: ImageView
@@ -51,13 +55,8 @@ class EditarEventoActivity:AppCompatActivity() {
     private var ImgUriEvento: Uri? = null
     private var ImgUriProfe: Uri? = null
 
-    private val storage = Firebase.storage
-
-    private val db = FirebaseFirestore.getInstance()
-
-
     lateinit var btnImgEvento: Button
-    lateinit var edtNomEvento:TextInputEditText
+    lateinit var edtNomEvento: TextInputEditText
     lateinit var edtCategoria: AutoCompleteTextView
     lateinit var edtSede: AutoCompleteTextView
     lateinit var edtFechaHoraInicio: TextInputEditText
@@ -67,17 +66,18 @@ class EditarEventoActivity:AppCompatActivity() {
     lateinit var btnImgProfesor: Button
     lateinit var edtNomProfe: TextInputEditText
     lateinit var edtInfoProfe: TextInputEditText
-    lateinit var myToggle:SwitchMaterial
+    lateinit var myToggle: SwitchMaterial
     lateinit var btnEditarEvento: Button
-    lateinit var btnCodigo : TextView
+    lateinit var btnCodigo: TextView
     private var fechaHoraInicio: Calendar? = null
-    private lateinit var sedeViewModel: SedeViewModel
+    private lateinit var editarEventoViewModel: EditarEventoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_evento)
 
-        sedeViewModel = ViewModelProvider(this).get(SedeViewModel::class.java)
+        editarEventoViewModel = ViewModelProvider(this).get(EditarEventoViewModel::class.java)
+
         btnImgEvento = findViewById(R.id.btnImgEvento)
         imgEvento = findViewById(R.id.imagenEvento)
         edtNomEvento = findViewById(R.id.edtNomEvento)
@@ -99,16 +99,23 @@ class EditarEventoActivity:AppCompatActivity() {
         val adapter = ArrayAdapter(this, R.layout.item_dropdown, items)
         edtCategoria.setAdapter(adapter)
 
-        sedeViewModel.sedeList.observe(this) { sedes ->
-            val adapter = ArrayAdapter(this, R.layout.item_dropdown, sedes)
-            edtSede.setAdapter(adapter)
+        // Observa el estado de actualización del evento
+        editarEventoViewModel.eventUpdateStatus.observe(this) { isSuccess ->
+            if (isSuccess) {
+                Toast.makeText(this, "Actualización exitosa", Toast.LENGTH_LONG).show()
+                val intent = Intent(this, ListaEventoActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this, "Algo salió mal", Toast.LENGTH_SHORT).show()
+            }
         }
+
         edtFechaHoraInicio.inputType = InputType.TYPE_NULL
         edtHoraFin.inputType = InputType.TYPE_NULL
 
-
-
-        edtFechaHoraInicio.setOnFocusChangeListener { v, hasFocus ->
+        edtFechaHoraInicio.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 mostrarDateTimePicker(edtFechaHoraInicio)
             }
@@ -118,7 +125,7 @@ class EditarEventoActivity:AppCompatActivity() {
             mostrarDateTimePicker(edtFechaHoraInicio)
         }
 
-        edtHoraFin.setOnFocusChangeListener { v, hasFocus ->
+        edtHoraFin.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 mostrarTimePicker(edtHoraFin)
             }
@@ -136,32 +143,31 @@ class EditarEventoActivity:AppCompatActivity() {
             }
         }
 
-        btnImgEvento.setOnClickListener{
+        btnImgEvento.setOnClickListener {
             pickMediaEvento.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-        btnImgProfesor.setOnClickListener{
+        btnImgProfesor.setOnClickListener {
             pickMediaProfe.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
         val btnButtonAtras = findViewById<ImageView>(R.id.btnAtras)
-        btnButtonAtras.setOnClickListener{
+        btnButtonAtras.setOnClickListener {
             finish()
         }
 
-
         val intent = intent
-        var nomevento = intent.getStringExtra("nomevento")
-        var categoria = intent.getStringExtra("categoria")
-        var sede = intent.getStringExtra("sede")
-        var fechayhora = intent.getStringExtra("fechayhora")
-        var horafin = intent.getStringExtra("horafin")
-        var maxparticipantes = intent.getLongExtra("maxparticipantes", 0)
-        var actualparticipantes = intent.getLongExtra("actualparticipantes", 0)
-        var descripcion = intent.getStringExtra("descripcion")
-        var imgEventoUrl = intent.getStringExtra("imgevento")
-        var imgProfeUrl = intent.getStringExtra("imgprofe")
-        var nomprofe = intent.getStringExtra("nomprofe")
-        var infoprofe = intent.getStringExtra("infoprofe")
-        var estadoevento = intent.getBooleanExtra("estadoevento",false)
+        val nomevento = intent.getStringExtra("nomevento")
+        val categoria = intent.getStringExtra("categoria")
+        val sede = intent.getStringExtra("sede")
+        val fechayhora = intent.getStringExtra("fechayhora")
+        val horafin = intent.getStringExtra("horafin")
+        val maxparticipantes = intent.getLongExtra("maxparticipantes", 0)
+        val actualparticipantes = intent.getLongExtra("actualparticipantes", 0)
+        val descripcion = intent.getStringExtra("descripcion")
+        val imgEventoUrl = intent.getStringExtra("imgevento")
+        val imgProfeUrl = intent.getStringExtra("imgprofe")
+        val nomprofe = intent.getStringExtra("nomprofe")
+        val infoprofe = intent.getStringExtra("infoprofe")
+        val estadoevento = intent.getBooleanExtra("estadoevento", false)
         val codigo = intent.getStringExtra("codigo")
 
         edtNomEvento.setText(nomevento)
@@ -182,9 +188,9 @@ class EditarEventoActivity:AppCompatActivity() {
             if (validateFields()) {
                 if (ImgUriEvento != null || ImgUriProfe != null) {
                     ImgUriEvento?.let { uriEvento ->
-                        uploadImageToFirebaseStorage(uriEvento, "eventos/$codigo/eventImage.jpg") { imgEventoUrl ->
+                        editarEventoViewModel.uploadImageToFirebaseStorage(uriEvento, "eventos/$codigo/eventImage.jpg") { imgEventoUrl ->
                             ImgUriProfe?.let { uriProfe ->
-                                uploadImageToFirebaseStorage(uriProfe, "eventos/$codigo/professorImage.jpg") { imgProfeUrl ->
+                                editarEventoViewModel.uploadImageToFirebaseStorage(uriProfe, "eventos/$codigo/professorImage.jpg") { imgProfeUrl ->
                                     updateEventInFirestore(imgEventoUrl, imgProfeUrl)
                                 }
                             } ?: run {
@@ -193,7 +199,7 @@ class EditarEventoActivity:AppCompatActivity() {
                         }
                     } ?: run {
                         ImgUriProfe?.let { uriProfe ->
-                            uploadImageToFirebaseStorage(uriProfe, "eventos/$codigo/professorImage.jpg") { imgProfeUrl ->
+                            editarEventoViewModel.uploadImageToFirebaseStorage(uriProfe, "eventos/$codigo/professorImage.jpg") { imgProfeUrl ->
                                 updateEventInFirestore(imgEventoUrl ?: "", imgProfeUrl)
                             }
                         } ?: run {
@@ -251,8 +257,6 @@ class EditarEventoActivity:AppCompatActivity() {
         }
     }
 
-
-
     private fun mostrarDateTimePicker(edt: TextInputEditText) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -267,6 +271,11 @@ class EditarEventoActivity:AppCompatActivity() {
             val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
                 val selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
                 edt.setText("$selectedDate $selectedTime")
+
+                // Actualiza fechaHoraInicio con la fecha y hora seleccionadas
+                fechaHoraInicio = Calendar.getInstance().apply {
+                    set(year, monthOfYear, dayOfMonth, selectedHour, selectedMinute)
+                }
             }, hour, minute, true)
             timePickerDialog.show()
         }, year, month, day)
@@ -285,21 +294,8 @@ class EditarEventoActivity:AppCompatActivity() {
         }, hour, minute, true)
         timePickerDialog.show()
     }
-    fun uploadImageToFirebaseStorage(imageUri: Uri, path: String, onSuccess: (String) -> Unit) {
-        val storageRef = storage.reference.child(path)
-        val uploadTask = storageRef.putFile(imageUri)
 
-        uploadTask.addOnSuccessListener {
-            storageRef.downloadUrl.addOnSuccessListener { uri ->
-                onSuccess(uri.toString())
-            }
-        }.addOnFailureListener {
-            Log.e("FirebaseStorage", "Image upload failed: ${it.message}")
-        }
-    }
-
-    fun updateEventInFirestore(imgEvento : String, imgProfesor : String) {
-
+    private fun updateEventInFirestore(imgEvento: String, imgProfesor: String) {
         val nomevento = edtNomEvento.text.toString()
         val categoria = edtCategoria.text.toString()
         val sede = edtSede.text.toString()
@@ -312,33 +308,21 @@ class EditarEventoActivity:AppCompatActivity() {
         val estadoEvento = myToggle.isChecked
         val codigo = btnCodigo.text.toString()
 
-
-        val data = HashMap<String, Any>()
-        data["nomevento"] = nomevento
-        data["categoria"] = categoria
-        data["sede"] = sede
-        data["fechayhora"] = fechaHoraInicioTimestamp ?: Timestamp.now()
-        data["horafin"] = horaFin
-        data["maxparticipantes"] = maxParticipantes
-        data["descripcion"] = descripcion
-        data["imgevento"] = imgEvento
-        data["imgprofe"] = imgProfesor
-        data["nomprofe"] = nomProfe
-        data["infoprofe"] = infoProfe
-        data["estadoevento"] = estadoEvento
-
-        db.collection("eventos").document(codigo)
-            .update(data)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Actualizacion exitosa", Toast.LENGTH_LONG).show()
-                val intent = Intent(this, ListaEventoActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                finish()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Algo salió mal", Toast.LENGTH_SHORT).show()
-            }
+        editarEventoViewModel.updateEventInFirestore(
+            codigo,
+            nomevento,
+            categoria,
+            sede,
+            fechaHoraInicioTimestamp ?: Timestamp.now(),
+            horaFin,
+            maxParticipantes,
+            descripcion,
+            imgEvento,
+            imgProfesor,
+            nomProfe,
+            infoProfe,
+            estadoEvento
+        )
     }
 
 }
