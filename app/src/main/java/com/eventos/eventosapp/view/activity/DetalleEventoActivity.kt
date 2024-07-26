@@ -1,10 +1,7 @@
 package com.eventos.eventosapp.view.activity
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -21,14 +18,12 @@ import com.squareup.picasso.Picasso
 class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
 
     private  lateinit var map: GoogleMap
-    private var isSaved = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detalle_evento)
 
-        val guardar= findViewById<ImageView>(R.id.guardar)
         val imagen= findViewById<ImageView>(R.id.imagen)
         val titulo= findViewById<TextView>(R.id.titulo)
         val ubicacion= findViewById<TextView>(R.id.ubicacion)
@@ -42,8 +37,6 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
         val infoProfesor= findViewById<TextView>(R.id.infoProfesor)
         val descripcion= findViewById<TextView>(R.id.descripcion)
         val imgmap= findViewById<ImageView>(R.id.imgMap)
-        val BotonesAdmin = findViewById<LinearLayout>(R.id.BotonesAdmin)
-        val btnParticipar = findViewById<Button>(R.id.btnParticipar)
 
         val nomevento = intent.getStringExtra("nomevento")
         val categ = intent.getStringExtra("categoria")
@@ -58,13 +51,7 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
         val nomprofe = intent.getStringExtra("nomprofe")
         val infoprofe = intent.getStringExtra("infoprofe")
         val codigo = intent.getStringExtra("codigo")
-        val valor = intent.getBooleanExtra("valor", false)
 
-        if (valor == true){
-            BotonesAdmin.visibility = View.GONE
-        }else {
-            btnParticipar.visibility = View.GONE
-        }
 
         Picasso.get().load(imgevento).into(imagen)
         titulo.text=nomevento
@@ -83,14 +70,7 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
         imgmap.setOnClickListener{
             mostrarDialogoMap()
         }
-        guardar.setOnClickListener{
-            if (isSaved) {
-                guardar.setImageResource(R.drawable.icon_guardar) // Imagen original
-            } else {
-                guardar.setImageResource(R.drawable.icon_guardar_relleno) // Imagen rellena
-            }
-            isSaved = !isSaved
-        }
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
