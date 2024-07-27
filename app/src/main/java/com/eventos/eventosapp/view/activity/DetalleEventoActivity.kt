@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -37,7 +38,7 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
         eventoGuardadosViewModel = ViewModelProvider(this)[EventoGuardadosViewModel::class.java]
 
         var isSaved = false
-
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val guardar= findViewById<ImageView>(R.id.guardar)
         val imagen= findViewById<ImageView>(R.id.imagen)
         val titulo= findViewById<TextView>(R.id.titulo)
@@ -93,6 +94,7 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
             BotonesAdmin.visibility = View.GONE
         }else {
             btnParticipar.visibility = View.GONE
+            guardar.visibility= View.GONE
         }
 
         btnEditar.setOnClickListener {
@@ -123,14 +125,32 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
         }
 
         guardar.setOnClickListener{
+            progressBar.visibility = View.VISIBLE
+            guardar.visibility = View.GONE
             if (isSaved) {
                 eventoGuardadosViewModel.QuitarEvento(codigo.toString())
-                guardar.setImageResource(R.drawable.icon_guardar)
             } else {
                 eventoGuardadosViewModel.GuardarEvento(codigo.toString())
-                guardar.setImageResource(R.drawable.icon_guardar_relleno)
             }
             isSaved = !isSaved
+        }
+        eventoGuardadosViewModel.guardarEventoStatus.observe(this) { success ->
+            progressBar.visibility = View.GONE
+            guardar.visibility = View.VISIBLE
+            if (success) {
+                guardar.setImageResource(R.drawable.icon_guardar_relleno)
+            } else {
+                Toast.makeText(this, "Error al guardar el evento", Toast.LENGTH_SHORT).show()
+            }
+        }
+        eventoGuardadosViewModel.quitarEventoStatus.observe(this) { success ->
+            progressBar.visibility = View.GONE
+            guardar.visibility = View.VISIBLE
+            if (success) {
+                guardar.setImageResource(R.drawable.icon_guardar)
+            } else {
+                Toast.makeText(this, "Error al quitar el evento", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

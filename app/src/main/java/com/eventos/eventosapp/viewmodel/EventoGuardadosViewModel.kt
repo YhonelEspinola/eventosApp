@@ -1,5 +1,6 @@
 package com.eventos.eventosapp.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.eventos.eventosapp.model.Evento
@@ -16,6 +17,12 @@ class EventoGuardadosViewModel: ViewModel() {
     val Message = MutableLiveData<String>()
     val currentUser = FirebaseAuth.getInstance().currentUser
     val uid = currentUser?.uid
+
+    private val _guardarEventoStatus = MutableLiveData<Boolean>()
+    private val _quitarEventoStatus = MutableLiveData<Boolean>()
+    val guardarEventoStatus: LiveData<Boolean> get() = _guardarEventoStatus
+    val quitarEventoStatus: LiveData<Boolean> get() = _quitarEventoStatus
+
 
     fun VerificarEvento(eid:String){
         db.collection("e_guardados")
@@ -42,8 +49,10 @@ class EventoGuardadosViewModel: ViewModel() {
         db.collection("e_guardados")
             .add(data)
             .addOnSuccessListener {
+                _guardarEventoStatus.value = true
             }
             .addOnFailureListener {
+                _guardarEventoStatus.value = false
             }
     }
 
@@ -58,15 +67,15 @@ class EventoGuardadosViewModel: ViewModel() {
                     for (document in documents) {
                         db.collection("e_guardados").document(document.id).delete()
                             .addOnSuccessListener {
-                                // Documento eliminado con éxito
+                                _quitarEventoStatus.value = true
                             }
                             .addOnFailureListener { exception ->
-                                // Manejar error al eliminar documento
+                                _quitarEventoStatus.value = false
                             }
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Manejar error al obtener documentos
+                    _quitarEventoStatus.value = false
                 }
         }
     }
