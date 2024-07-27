@@ -5,7 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.eventos.eventosapp.R
-import com.eventos.eventosapp.view.fragment.GuardarFragment
+import com.eventos.eventosapp.view.fragment.GuardadosFragment
 import com.eventos.eventosapp.view.fragment.InicioFragment
 import com.eventos.eventosapp.view.fragment.PerfilFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,7 +27,7 @@ class MenuActivity: AppCompatActivity()  {
                 }
 
                 R.id.itemGuardar -> {
-                    val fragment = GuardarFragment.newInstance()
+                    val fragment = GuardadosFragment.newInstance()
                     openFragment(fragment)
                     true
                 }

@@ -7,28 +7,36 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.eventos.eventosapp.R
+import com.eventos.eventosapp.viewmodel.EventoGuardadosViewModel
+import com.eventos.eventosapp.viewmodel.EventoViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
 
 class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
 
+    private lateinit var eventoGuardadosViewModel: EventoGuardadosViewModel
     private  lateinit var map: GoogleMap
-    private var isSaved = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detalle_evento)
+
+        eventoGuardadosViewModel = ViewModelProvider(this)[EventoGuardadosViewModel::class.java]
+
+        var isSaved = false
 
         val guardar= findViewById<ImageView>(R.id.guardar)
         val imagen= findViewById<ImageView>(R.id.imagen)
@@ -105,11 +113,22 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
             }
             startActivity(intent)
         }
+        eventoGuardadosViewModel.VerificarEvento(codigo.toString())
+
+        eventoGuardadosViewModel.eventoverificado.observe(this) {
+            if (it) {
+                isSaved = true
+                guardar.setImageResource(R.drawable.icon_guardar_relleno)
+            }
+        }
+
         guardar.setOnClickListener{
             if (isSaved) {
-                guardar.setImageResource(R.drawable.icon_guardar) // Imagen original
+                eventoGuardadosViewModel.QuitarEvento(codigo.toString())
+                guardar.setImageResource(R.drawable.icon_guardar)
             } else {
-                guardar.setImageResource(R.drawable.icon_guardar_relleno) // Imagen rellena
+                eventoGuardadosViewModel.GuardarEvento(codigo.toString())
+                guardar.setImageResource(R.drawable.icon_guardar_relleno)
             }
             isSaved = !isSaved
         }
