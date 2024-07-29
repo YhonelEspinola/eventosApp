@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/cabeceraDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/titleDialog"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bebas"
+                android:text="Perfil"
+                android:textAlignment="center"
+                android:textColor="@color/azulClaro"
+                android:textSize="25sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/azulClaro"
+                app:layout_constraintTop_toBottomOf="@+id/titleDialog"
+                app:layout_constraintEnd_toEndOf="@+id/titleDialog"
+                app:layout_constraintStart_toStartOf="@+id/titleDialog"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/contentDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/cabeceraDialog"
+            app:layout_constraintEnd_toEndOf="@+id/cabeceraDialog"
+            app:layout_constraintStart_toStartOf="@+id/cabeceraDialog"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textStyle="bold"
+                android:text="Nombre"/>
+            <TextView
+                android:id="@+id/textNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:ellipsize="end"
+                android:text="Juan Alberto Mendoza Perez"/>
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textStyle="bold"
+                android:text="Correo"/>
+            <TextView
+                android:id="@+id/textCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:ellipsize="end"
+                android:text="correo@cibertec.edu.pe"/>
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textStyle="bold"
+                android:text="Carrera"/>
+            <TextView
+                android:id="@+id/textCarrera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:ellipsize="end"
+                android:text="Computación e Informática"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

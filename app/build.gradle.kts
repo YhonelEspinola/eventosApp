@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.firebase.storage.ktx)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebaseAuth)
+    implementation(libs.firebase.auth.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -59,4 +60,5 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.squareup.picasso:picasso:2.8")
     implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.29")
 }
