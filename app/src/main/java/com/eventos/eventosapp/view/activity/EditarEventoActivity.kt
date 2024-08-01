@@ -71,12 +71,14 @@ class EditarEventoActivity:AppCompatActivity() {
     lateinit var btnCodigo: TextView
     private var fechaHoraInicio: Calendar? = null
     private lateinit var editarEventoViewModel: EditarEventoViewModel
+    private lateinit var sedeViewModel: SedeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_evento)
 
         editarEventoViewModel = ViewModelProvider(this).get(EditarEventoViewModel::class.java)
+        sedeViewModel = ViewModelProvider(this).get(SedeViewModel::class.java)
 
         btnImgEvento = findViewById(R.id.btnImgEvento)
         imgEvento = findViewById(R.id.imagenEvento)
@@ -98,6 +100,7 @@ class EditarEventoActivity:AppCompatActivity() {
         val items = listOf("Arte Musical", "Artes Escénicas", "Artes Marciales", "Danzas y Bailes")
         val adapter = ArrayAdapter(this, R.layout.item_dropdown, items)
         edtCategoria.setAdapter(adapter)
+        Log.d("EditarEventoActivity", "Categorías: $items")
 
         // Observa el estado de actualización del evento
         editarEventoViewModel.eventUpdateStatus.observe(this) { isSuccess ->
@@ -110,6 +113,11 @@ class EditarEventoActivity:AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Algo salió mal", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        sedeViewModel.sedeList.observe(this) { sedes ->
+            val adapter = ArrayAdapter(this, R.layout.item_dropdown, sedes)
+            edtSede.setAdapter(adapter)
         }
 
         edtFechaHoraInicio.inputType = InputType.TYPE_NULL
@@ -167,9 +175,10 @@ class EditarEventoActivity:AppCompatActivity() {
         val imgProfeUrl = intent.getStringExtra("imgprofe")
         val nomprofe = intent.getStringExtra("nomprofe")
         val infoprofe = intent.getStringExtra("infoprofe")
-        val estadoevento = intent.getBooleanExtra("estadoevento", false)
+        val estadoevento = intent.getBooleanExtra("estadoevento", true)
         val codigo = intent.getStringExtra("codigo")
 
+        Log.d("EditarEventoActivity", "estadoevento: $estadoevento")
         edtNomEvento.setText(nomevento)
         edtCategoria.setText(categoria)
         edtSede.setText(sede)

@@ -2,6 +2,7 @@ package com.eventos.eventosapp.view.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -71,6 +72,7 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
         val infoprofe = intent.getStringExtra("infoprofe")
         val codigo = intent.getStringExtra("codigo")
         val valor = intent.getBooleanExtra("valor", false)
+        val estado = intent.getBooleanExtra("estadoevento", true)
 
         Picasso.get().load(imgevento).into(imagen)
         titulo.text=nomevento
@@ -97,6 +99,7 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
             guardar.visibility= View.GONE
         }
 
+        Log.d("DetalleEventoActivity", "estado: $estado")
         btnEditar.setOnClickListener {
             val intent = Intent(this, EditarEventoActivity::class.java).apply {
                 putExtra("nomevento", nomevento)
@@ -112,6 +115,7 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
                 putExtra("nomprofe", nomprofe)
                 putExtra("infoprofe", infoprofe)
                 putExtra("codigo", codigo)
+                putExtra("estadoevento", estado)
             }
             startActivity(intent)
         }
