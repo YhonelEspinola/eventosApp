@@ -64,7 +64,11 @@ class CrearAlumnoActivity:AppCompatActivity() {
         viewModel.alumRegisterStatus.observe(this) { status ->
             if (status) {
                 progressDialog.dismiss()
-                startActivity(Intent(this, GestionEventosActivity::class.java))
+                binding.textNomApe.text?.clear()
+                binding.textCorreo.text?.clear()
+                binding.edtSede.text?.clear()
+                binding.edtCarrera.text?.clear()
+                binding.textContraseA.text?.clear()
                 finish()
             }else{
                 progressDialog.dismiss()

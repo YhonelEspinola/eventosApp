@@ -71,7 +71,11 @@ class CrearAlumnoFragment: Fragment() {
         viewModel.alumRegisterStatus.observe(viewLifecycleOwner) { status ->
             if (status) {
                 progressDialog.dismiss()
-                startActivity(Intent(activity, GestionEventosActivity::class.java))
+                binding.textNomApe.text?.clear()
+                binding.textCorreo.text?.clear()
+                binding.edtSede.text?.clear()
+                binding.edtCarrera.text?.clear()
+                binding.textContraseA.text?.clear()
             }else{
                 progressDialog.dismiss()
             }
