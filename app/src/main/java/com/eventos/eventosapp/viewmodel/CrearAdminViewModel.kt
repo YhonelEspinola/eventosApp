@@ -57,8 +57,8 @@ class CrearAdminViewModel:ViewModel() {
 
         val datosAdministrador = hashMapOf(
             "uid" to uidBD,
-            "usuario" to usuario,
-            "correo" to correo,
+            "nombre" to usuario,
+            "correo_insti_admin" to correo,
             "tipoUsuario" to "administrador"
         )
 
