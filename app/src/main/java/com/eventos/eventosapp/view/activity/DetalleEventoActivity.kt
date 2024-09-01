@@ -57,6 +57,7 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
         val btnEditar= findViewById<Button>(R.id.btnEditar)
         val BotonesAdmin = findViewById<LinearLayout>(R.id.BotonesAdmin)
         val btnParticipar = findViewById<Button>(R.id.btnParticipar)
+        val btnInscritos = findViewById<Button>(R.id.btnVerInscritos)
 
         val nomevento = intent.getStringExtra("nomevento")
         val categ = intent.getStringExtra("categoria")
@@ -155,6 +156,12 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
             } else {
                 Toast.makeText(this, "Error al quitar el evento", Toast.LENGTH_SHORT).show()
             }
+        }
+        btnInscritos.setOnClickListener{
+            val intent = Intent(this, InscritosActivity::class.java).apply {
+                putExtra("codigo", codigo)
+            }
+            startActivity(intent)
         }
     }
 

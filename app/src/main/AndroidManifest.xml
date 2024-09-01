@@ -32,6 +32,7 @@
         <activity android:name=".view.activity.ListaEventoActivity"/>
         <activity android:name=".view.activity.BuscarEventoActivity"/>
         <activity android:name=".view.activity.EditarEventoActivity"/>
+        <activity android:name=".view.activity.InscritosActivity"/>
     </application>
 
 </manifest>
