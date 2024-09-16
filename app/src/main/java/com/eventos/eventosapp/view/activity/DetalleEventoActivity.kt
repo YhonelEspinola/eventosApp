@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.eventos.eventosapp.R
 import com.eventos.eventosapp.viewmodel.EventoGuardadosViewModel
 import com.eventos.eventosapp.viewmodel.EventoViewModel
+import com.eventos.eventosapp.viewmodel.ParticiparViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,19 +25,25 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
 
 class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var eventoGuardadosViewModel: EventoGuardadosViewModel
+    private lateinit var participarViewModel : ParticiparViewModel
     private  lateinit var map: GoogleMap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detalle_evento)
 
+
+
+
         eventoGuardadosViewModel = ViewModelProvider(this)[EventoGuardadosViewModel::class.java]
+        participarViewModel = ViewModelProvider(this)[ParticiparViewModel::class.java]
 
         var isSaved = false
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
@@ -163,6 +170,56 @@ class DetalleEventoActivity: AppCompatActivity(), OnMapReadyCallback {
             }
             startActivity(intent)
         }
+
+
+        val eventoRef = FirebaseFirestore.getInstance().collection("eventos").document(codigo ?: "")
+
+        eventoRef.addSnapshotListener{ snapshot, e ->
+            if(e != null){
+                Log.w("DetalleEventoActivity", "Error al escuchar cambios en actualparticipantes", e)
+                return@addSnapshotListener
+            }
+
+            if(snapshot != null && snapshot.exists()){
+                val actualizarParticipantes = snapshot.getLong("actualparticipantes") ?: 0
+
+                participantesActuales.text = actualizarParticipantes.toString()
+            }
+        }
+
+
+        btnParticipar.setOnClickListener{
+            if (codigo != null) {
+
+                if(participarViewModel.comprobarSesion()){
+                    progressBar.visibility = View.GONE
+                    participarViewModel.participar(codigo)
+                }else{
+                    Toast.makeText(this, "Debes iniciar sesión para participar", Toast.LENGTH_SHORT).show()
+                }
+            }else {
+                Toast.makeText(this, "Error al participar", Toast.LENGTH_SHORT).show()
+            }
+
+            participarViewModel.participarStatus.observe(this){ success ->
+                progressBar.visibility = View.GONE
+                if(success){
+                    Toast.makeText(this, "Su participacion a sido registrada", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+            participarViewModel.mensajeError.observe(this){ error ->
+                if (error.isNotEmpty()){
+                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+        }
+
+
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

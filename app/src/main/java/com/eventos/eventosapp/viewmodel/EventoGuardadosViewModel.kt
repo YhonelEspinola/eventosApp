@@ -84,16 +84,24 @@ class EventoGuardadosViewModel: ViewModel() {
         if (uid != null) {
             db.collection("e_guardados")
                 .whereEqualTo("uid", uid)
-                .get()
-                .addOnSuccessListener { documents ->
-                    val eids = documents.map { it.getString("eid") }
+                .addSnapshotListener{ documents, e ->
+                    if(e != null){
+                        listEventos.value = emptyList()
+                        return@addSnapshotListener
+                    }
+
+                    val eids = documents?.map { it.getString("eid") } ?: emptyList()
                     if (eids.isNotEmpty()) {
                         db.collection("eventos")
                             .whereIn(FieldPath.documentId(), eids)
-                            .get()
-                            .addOnSuccessListener { querySnapshot ->
+                            .addSnapshotListener { querySnapshot, error ->
+                                if(error != null){
+                                    listEventos.value = emptyList()
+                                    return@addSnapshotListener
+                                }
+
                                 val newList = arrayListOf<Evento>()
-                                for (document in querySnapshot) {
+                                for (document in querySnapshot!!) {
                                     val data = document.data
                                     val nomevento = data["nomevento"] as? String ?: ""
                                     val categoria = data["categoria"] as? String ?: ""
@@ -117,19 +125,13 @@ class EventoGuardadosViewModel: ViewModel() {
                                 }
                                 listEventos.value = newList
                             }
-                            .addOnFailureListener { exception ->
-                                // Manejar error
-                                listEventos.value = emptyList()
-                            }
+
                     } else {
                         // Si no hay eids, retornar lista vacía
                         listEventos.value = emptyList()
                     }
                 }
-                .addOnFailureListener { exception ->
-                    // Manejar error
-                    listEventos.value = emptyList()
-                }
+
         } else {
             // Si no hay usuario logueado, retornar lista vacía
             listEventos.value = emptyList()
