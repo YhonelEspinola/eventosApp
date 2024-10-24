@@ -58,10 +58,8 @@ class GestionEventosActivity: AppCompatActivity()  {
                         val role = document.getString("tipoUsuario")
                         if (role == "administrador") {
                             startActivity(Intent(this, CrearUsuarioActivity::class.java))
-                            finishAffinity()
                         } else if (role == "empleado") {
                             startActivity(Intent(this, CrearAlumnoActivity::class.java))
-                            finish()
                         }
                     } else {
                         Toast.makeText(this, "No se encontró información de usuario.", Toast.LENGTH_SHORT).show()

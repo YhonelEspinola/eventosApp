@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.eventos.eventosapp.R
 import com.eventos.eventosapp.view.activity.BuscarEventoActivity
 import com.eventos.eventosapp.view.activity.LoginActivity
+import com.eventos.eventosapp.view.activity.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class PerfilFragment: Fragment() {
@@ -46,7 +47,7 @@ class PerfilFragment: Fragment() {
     private fun cerrarSesion(){
         firebaseAuth!!.signOut()
         clearPreferences()
-        startActivity(Intent(activity,LoginActivity::class.java))
+        startActivity(Intent(activity,MainActivity::class.java))
         activity?.finish()
     }
 

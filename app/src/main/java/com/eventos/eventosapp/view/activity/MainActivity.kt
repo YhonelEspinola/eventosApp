@@ -27,37 +27,30 @@ class MainActivity : AppCompatActivity() {
             comprobarUsuario()
         }, 1000)
     }
-
     private fun comprobarUsuario() {
         val userId = firebaseAuth.currentUser?.uid
-        if (userId != null) {
+        if (userId == null) {
+            startActivity(Intent(this,LoginActivity::class.java))
+            finish()
+        } else {
             FirebaseFirestore.getInstance().collection("usuarios").document(userId).get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        val role = document.getString("tipoUsuario")
-                        if (role == "administrador") {
-                            // Redirigir a la actividad de administrador
-                            startActivity(Intent(this, GestionEventosActivity::class.java))
-                            finishAffinity()
-                        } else if (role == "empleado") {
-                            // Redirigir a la actividad de administrador
-                            startActivity(Intent(this, GestionEventosActivity::class.java))
-                            finish()
-                        }else {
-                            // Redirigir a la actividad de estudiante
-                            startActivity(Intent(this, MenuActivity::class.java))
-                            finish()
-                        }
+                .addOnSuccessListener {
+                    val role = it.getString("tipoUsuario")
+                    if (role == "administrador") {
+                        // Redirigir a la actividad de administrador
+                        startActivity(Intent(this, GestionEventosActivity::class.java))
+                        finishAffinity()
+                    } else if (role == "empleado"){
+                        // Redirigir a la actividad de administrador
+                        startActivity(Intent(this, GestionEventosActivity::class.java))
+                        finish()
                     } else {
-                        Toast.makeText(this, "No se encontró información de usuario.", Toast.LENGTH_SHORT).show()
+                        // Redirigir a la actividad de estudiante
+                        startActivity(Intent(this, MenuActivity::class.java))
+                        finish()
                     }
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error al obtener información de usuario.", Toast.LENGTH_SHORT).show()
-                }
-        } else {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
         }
     }
+
 }

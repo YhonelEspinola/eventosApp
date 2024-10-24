@@ -23,6 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.activity.LoginActivity"/>
         <activity android:name=".view.activity.MenuActivity"/>
         <activity android:name=".view.activity.CrearUsuarioActivity"/>
         <activity android:name=".view.activity.CrearAlumnoActivity"/>
